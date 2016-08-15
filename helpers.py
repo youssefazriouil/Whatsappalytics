@@ -56,6 +56,7 @@ def getPostObject(line):
     return postObj
 
 def handleMetaPost(post, member):
+    post = post[:-1] #verwijderen van carriage return
     if post == "<afbeelding weggelaten>":
         member.incrementImagesAmount()
     elif post == "<audio weggelaten>":
