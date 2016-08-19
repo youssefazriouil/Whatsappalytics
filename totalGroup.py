@@ -1,32 +1,40 @@
 class TotalGroup:
 
     def __init__(self):
-        self.groupMembers = []
+        self.name = "Total"
         self.totalPostAmount = 0
         self.totalImagesAmount = 0
         self.totalAudioAmount = 0
+        self.totalVideoAmount = 0
+        self.totalCharacterAmount = 0
         self.totalAveragePostLength = 0
         self.totalPostTimeHistogram = {}
+        self.totalPostWeekdayHistogram = {}
         self.totalPostDateHistogram = {}
         self.totalWordsHistogram = {}
 
     #Setters
-    def addGroupMember(self, name):
-        if(!(name in self.groupMembers):
-            self.groupMembers.append(name)
-
 
     def incrementTotalPostAmount(self):
         self.totalPostAmount += 1
 
     def incrementTotalImagesAmount(self):
-        self.totalimagesAmount += 1
+        self.totalImagesAmount += 1
 
     def incrementTotalAudioAmount(self):
         self.totalAudioAmount += 1
 
-    def increaseTotalAveragePostLength(self, postLegth):
-        self.totalAveragePostLength = (self.totalAveragePostLength + postLength) / self.totalPostAmount
+    def incrementTotalVideoAmount(self):
+        self.totalAudioAmount += 1
+
+    def increaseTotalCharacterAmount(self, amount):
+        self.totalCharacterAmount += amount
+
+    def addToTotalPostWeekdayHistogram(self, weekday):
+        try:
+            self.totalPostWeekdayHistogram[weekday] += 1
+        except KeyError:
+            self.totalPostWeekdayHistogram[weekday] = 1
 
     def addToTotalPostTimeHistogram(self, hour):
         self.totalPostTimeHistogram[hour] += 1
@@ -38,8 +46,9 @@ class TotalGroup:
         self.totalWordsHistogram[word] += 1
 
     #getters
-    def getAllGroupMembers(self):
-        return self.groupMembers
+
+    def getName(self):
+        return self.name
 
     def getTotalPostAmount(self):
         return self.totalPostAmount
@@ -50,8 +59,14 @@ class TotalGroup:
     def getTotalAudioAmount(self):
         return self.totalAudioAmount
 
+    def getTotalVideoAmount(self):
+        return self.totalVideoAmount
+
     def getTotalAveragePostLength(self):
-        return self.totalAveragePostLength
+        return self.totalCharacterAmount / self.totalPostAmount
+
+    def getTotalPostWeekdayHistogram(self):
+        return self.totalPostWeekdayHistogram
 
     def getTotalPostTimeHistogram(self):
         return self.totalPostTimeHistogram
@@ -61,3 +76,16 @@ class TotalGroup:
 
     def getTotalWordsHistogram(self):
         return self.totalWordsHistogram
+
+    def getAllInfo(self):
+        totalObj = {}
+
+        totalObj['name'] = self.getName()
+        totalObj['postsAmount'] = self.getTotalPostAmount()
+        totalObj['images'] = self.getTotalImagesAmount()
+        totalObj['audio'] = self.getTotalAudioAmount()
+        totalObj['video'] = self.getTotalVideoAmount()
+        totalObj['averagePostLength'] = self.getTotalAveragePostLength()
+        totalObj['weekdays'] = self.getTotalPostWeekdayHistogram()
+
+        return totalObj

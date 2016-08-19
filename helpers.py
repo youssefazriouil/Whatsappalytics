@@ -55,24 +55,30 @@ def getPostObject(line):
 
     return postObj
 
-def handleMetaPost(post, member):
+def handleMetaPost(post, member, total):
     post = post[:-1] #verwijderen van carriage return
     if post == "<afbeelding weggelaten>":
         member.incrementImagesAmount()
+        total.incrementTotalImagesAmount()
     elif post == "<audio weggelaten>":
         member.incrementAudioAmount()
+        total.incrementTotalAudioAmount()
     elif post == "<video weggelaten>":
         member.incrementVideoAmount()
+        total.incrementTotalVideoAmount()
 
-def processPostForUser(post, groupMembers):
+def processPostForUser(post, groupMembers, total):
     author = post['author']
     if not(author in groupMembers):
         groupMembers[author] = GroupMember(author)
     if 'weggelaten>' in post['text']:
-        handleMetaPost(post['text'], groupMembers[author])
+        handleMetaPost(post['text'], groupMembers[author], total)
     else:
         groupMembers[author].incrementPostAmount()
+        total.incrementTotalPostAmount()
         groupMembers[author].increaseCharacterAmount(len(post['text']))
+        total.increaseTotalCharacterAmount(len(post['text']))
         groupMembers[author].addToPostWeekdayHistogram(post['weekday'])
+        total.addToTotalPostWeekdayHistogram(post['weekday'])
 
     return groupMembers

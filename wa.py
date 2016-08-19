@@ -3,6 +3,7 @@
 
 import sys
 from helpers import *
+from totalGroup import TotalGroup
 
 def main():
 #open het bestand die whatsapp geexporteerd heeft, die de naam 'Whatsapp chat_Nachtkast.txt' heeft
@@ -15,6 +16,7 @@ def main():
     compiledPost = ""
     prevLine = ""
     groupMembers = {}
+    totalGroup = TotalGroup()
     picModString = "heeft de groepsafbeelding gewijzigd"
 
 
@@ -29,15 +31,20 @@ def main():
                 if prevLine: #eerste iteratie is prevLine leeg
                     postObject = getPostObject(prevLine)
                     #update groupMembers dict
-                    groupMembers = processPostForUser(postObject, groupMembers)
+                    groupMembers = processPostForUser(postObject, groupMembers, totalGroup)
 
                 prevLine = line
                 compiledPost = ""
 
-    print getCorrectedLine(line) #print the last line in the file
+    #process the last line in the file
+    groupMembers = processPostForUser(getPostObject(getCorrectedLine(line)), groupMembers, totalGroup)
+
+    #toString het groupMembers-object
     for member in groupMembers:
         if groupMembers[member].getAveragePostLength():
             print groupMembers[member].getAllInfo()
+
+    print totalGroup.getAllInfo()
 
 if __name__ == "__main__":
     main()
